@@ -1,7 +1,7 @@
 Born
 ====
 
-some of my shell scripts from ~/bin for fun 
+some of my shell scripts from ~/bin for a bit of fun.
 
 ipaddr.sh
 ----
