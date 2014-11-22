@@ -76,23 +76,31 @@ gnu_version ()
    local my_version=$2
    declare -a my_req_version=( $( echo $my_version | awk -F'.' '{ print $1, $2 }' ) )
 
-   if [ "${my_command}" == "bash" ] || [ "${my_command}" == "sed" ]  ; then
+   if [ "${my_command}" == "bash" ]  ; then
       declare -a my_gnu_version=( $( ${my_command} --version | awk ' /^GNU/ { print $4 }' | awk -F'.' '{ print $1, $2, $3 }' ) )
 
    elif [ "${my_command}" == "awk" ]  ; then
 			declare -a my_gnu_version=( $( ${my_command} --version | awk ' /^GNU/ { print $3 }' | awk -F'.' '{ print $1, $2, $3 }' ) )
 
+   elif [ "${my_command}" == "sed" ]  ; then
+			declare -a my_gnu_version=( $( ${my_command} --version | awk ' /^sed/ { print $4 }' | awk -F'.' '{ print $1, $2, $3 }' ) )
+
    elif [ "${my_command}" == "grep" ]  ; then
 			declare -a my_gnu_version=( $( ${my_command} --version | awk ' /^grep/ { print $4 }' | awk -F'.' '{ print $1, $2, $3 }' ) )
 
-   else
-      declare -a my_gnu_version=( $( ${my_command} --version | awk ' /^GNU/ { print $3 }' | awk -F'.' '{ print $1, $2, $3 }' ) )
+#   else
+#      declare -a my_gnu_version=( $( ${my_command} --version | awk ' /^GNU/ { print $3 }' | awk -F'.' '{ print $1, $2, $3 }' ) )
       
    fi
-
+#echo ${my_command}
+#echo ${my_gnu_version[@]}
+#set +x
    rightsaidfred=$[${X_cols} - 14]
    if [ "${my_gnu_version[0]}" -ge "${my_req_version[0]}" ] && [ "${my_gnu_version[1]}" -ge "${my_req_version[1]}" ]; then
+#   if [ "${my_gnu_version[0]}" -ge "${my_req_version[0]}" ]; then
+
       printf "${info} GNU ${my_command} ${my_gnu_version[0]}.${my_gnu_version[1]}.${my_gnu_version[2]}"
+
       get_cursor
       tput cup ${row} ${rightsaidfred}
       printf "[ ${Cyan}OK${txtrst} ]\n"
@@ -201,9 +209,9 @@ grep_perl
 if [ ${verbose} -eq 1 ] ; then
    printf "key\n   Info: ${info}\n   Warning: ${warn}\n\n"
    printf "GNU util versions on dev system\n"
-   gnu_version "bash" "4.1.5"
+   gnu_version "bash" "4.3.26"
    gnu_version "sed" "4.2.1"
-   gnu_version "awk" "3.1.7"
+   gnu_version "awk" "4.0.0"
    gnu_version "grep" "2.6.3"
    macchanger_present
 fi
